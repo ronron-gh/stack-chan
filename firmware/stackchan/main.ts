@@ -8,12 +8,13 @@ import { SCServoDriver } from 'scservo-driver'
 import { PWMServoDriver } from 'sg90-driver'
 import { DynamixelDriver } from 'dynamixel-driver'
 import { NoneDriver } from 'none-driver'
+import { SimDriver } from 'sim-driver'
 import { TTS as LocalTTS } from 'tts-local'
 import { TTS as RemoteTTS } from 'tts-remote'
 import { TTS as VoiceVoxTTS } from 'tts-voicevox'
 import { TTS as VoiceVoxWebTTS } from 'tts-voicevox-web'
 import { TTS as ElevenLabsTTS } from 'tts-elevenlabs'
-import { TTS as OpenAITTS } from 'tts-openai'
+import { TTS as NoneTTS } from 'tts-none'
 import defaultMod, { StackchanMod } from 'default-mods/mod'
 import { Renderer as SimpleRenderer } from 'simple-face'
 import { Renderer as DogFaceRenderer } from 'dog-face'
@@ -28,6 +29,7 @@ function createRobot() {
     ['pwm', PWMServoDriver],
     ['rs30x', RS30XDriver],
     ['none', NoneDriver],
+    ['sim', SimDriver],
   ])
   const ttsEngines = new Map<string, new (param: unknown) => TTS>([
     ['local', LocalTTS],
@@ -35,7 +37,7 @@ function createRobot() {
     ['voicevox', VoiceVoxTTS],
     ['voicevox-web', VoiceVoxWebTTS],
     ['elevenlabs', ElevenLabsTTS],
-    ['openai', OpenAITTS],
+    ['none', NoneTTS],
   ])
   const renderers = new Map<string, new (param: unknown) => Renderer>([
     ['dog', DogFaceRenderer],

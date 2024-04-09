@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<robot name="origins">
+ <link name="base_link">
+  <visual>
+   <geometry>
+    <!-- <box size="0.6 0.6 0.2"/> -->
+    <mesh filename="feet_SCS0009.stl"/>
+   </geometry>
+   <material name="MattBlack"/>
+  </visual>
+ </link>
+
+ <joint name="base_to_body" type="revolute">
+  <parent link="base_link"/>
+  <child link="body"/>
+  <origin xyz="0 0 40"/>
+  <axis xyz="0 0 1"/>
+  <limit effort="300" lower="-2.96705972839" upper="2.96705972839" velocity="10"/>
+ </joint>
+
+ <link name="body">
+  <visual>
+   <geometry>
+    <box size="30 30 30"/>
+   </geometry>
+   <origin rpy="0 0 0" xyz="0 0 0"/>
+   <material name="MattBlack"/>
+  </visual>
+ </link>
+  
+ <joint name="body_to_head" type="revolute">
+  <parent link="body"/>
+  <child link="head"/>
+  <origin rpy="-0.2 0 0" xyz="0 0 0"/>
+  <axis xyz="1 0 0"/>
+  <limit effort="300" lower="-2.96705972839" upper="2.96705972839" velocity="10"/>
+ </joint>
+
+ <link name="head">
+  <visual>
+   <geometry>
+    <!-- <box size="0.6 0.6 0.6"/> -->
+    <mesh filename="shell_SCS0009.stl"/>
+   </geometry>
+   <origin rpy="0 0 0" xyz="0 -20 0"/>
+   <material name="MattBlack">
+    <color rgba="0.3 0.3 0.3 1"/>
+   </material>
+  </visual>
+ </link>
+
+ <joint name="head_to_m5" type="fixed">
+  <parent link="head"/>
+  <child link="m5"/>
+  <origin xyz="0 -35 0"/>
+ </joint>
+ 
+ <link name="m5">
+  <visual>
+   <geometry>
+    <mesh filename="M5Stack_body.stl"/>
+   </geometry>
+   <origin rpy="0 0 0" xyz="0 0 0"/>
+   <material name="Orange">
+    <color rgba="1.0 0.7 0.0 1.0"/>
+   </material>
+  </visual>
+ </link>
+
+ <joint name="m5_to_panel" type="fixed">
+  <parent link="m5"/>
+  <child link="m5_panel"/>
+  <origin xyz="0 -0.1 0"/>
+ </joint>
+
+ <link name="m5_panel">
+  <visual>
+   <geometry>
+    <mesh filename="M5Stack_panel.stl"/>
+   </geometry>
+   <origin rpy="0 0 0" xyz="0 0 0"/>
+   <material name="Black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+   </material>
+  </visual>
+ </link>
+
+
+</robot>
