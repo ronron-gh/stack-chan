@@ -9,6 +9,7 @@ import { createBalloonDecorator } from 'decorator'
 import { DEFAULT_FONT } from 'consts'
 import Resource from 'Resource'
 import parseBMF from 'commodetto/parseBMF'
+import ChatAudioIO from 'ChatAudioIO'
 
 const INTERVAL_FACE = 1000 / 30
 const INTERVAL_POSE = 1000 / 10
@@ -157,6 +158,27 @@ export class Robot {
     this.#updateFaceHandler = Timer.repeat(this.updateFace.bind(this), INTERVAL_FACE)
     this.#paused = false
     this.#faceContext = createFaceContext()
+
+    /*
+     *  ChatAudioIO（OpenAI Realtime）の動作テスト
+     */
+    const chat = new ChatAudioIO({
+      specifier: 'openAIRealtime',
+      voiceName: 'sage',
+      instructions: 'You are an AI robot named Stack-chan. Please speak in Japanese.',
+      onStateChanged(_state) {
+        //trace(`State: ${ChatAudioIO.states[state]} ${this.error ?? ""}\n`)
+        // ※ChatAudioIO.statesというメンバが存在しないと言われる。型定義が無いからか？
+        trace(`State: ${_state} ${this.error ?? ''}\n`)
+      },
+      onInputTranscript(text) {
+        trace(`User: ${text}\n`)
+      },
+      onOutputTranscript(text) {
+        trace(`Agent: ${text}\n`)
+      },
+    })
+    chat.connect()
   }
 
   /**
