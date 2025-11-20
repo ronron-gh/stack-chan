@@ -3,6 +3,7 @@
     "allowJs": true,
     "baseUrl": "./",
     "forceConsistentCasingInFileNames": true,
+    "allowImportingTsExtensions": true,
     "module": "es2022",
     "lib": [
       "es2024"
@@ -69,10 +70,10 @@
         "./stackchan/default-mods/on-launch"
       ],
       "calculate-power": [
-        "./typings/calculate-power"
+        "./stackchan/speeches/calculate-power"
       ],
       "mac-address": [
-        "./typings/mac-address"
+        "./utilities/esp32/mac-address"
       ],
       "default-mods/on-robot-created": [
         "./stackchan/default-mods/on-robot-created"
@@ -91,8 +92,5 @@
     "./stackchan/**/*",
     "./mods/**/*",
     "./tests/**/*"
-  ],
-  "exclude": [
-    "stackchan/speeches/calculate-power.js"
   ]
 }

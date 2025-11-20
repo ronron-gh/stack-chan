@@ -101,9 +101,15 @@ function createRobot() {
     screen?: {
       touch?: unknown
     }
+    device?: {
+      sensor?: {
+        Touch?: unknown
+      }
+    }
   }
   const globalEnv = globalThis as unknown as GlobalEnvironment
-  const touch = !globalEnv.screen?.touch && config.Touch ? new Touch() : undefined
+  const TouchConstructor = config.Touch || globalEnv.device?.sensor?.Touch
+  const touch = TouchConstructor ? new Touch(TouchConstructor) : undefined
   const microphone = Modules.has('embedded:io/audio/in') ? new Microphone() : undefined
   const tone = new Tone({ volume: ttsPrefs.volume })
   return new Robot({

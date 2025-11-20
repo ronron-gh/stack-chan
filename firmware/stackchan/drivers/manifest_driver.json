@@ -6,7 +6,7 @@
     "../utilities/manifest_utility.json"
   ],
   "modules": {
-    "*": ["./*"]
+    "*": ["./*", "./internal/*"]
   },
   "preload": [
     "dynamixel",
@@ -14,6 +14,8 @@
     "none-driver",
     "rs30x-driver",
     "scservo-driver",
-    "sg90-driver"
+    "sg90-driver",
+    "payload-buffer",
+    "internal/single-wait-slot"
   ]
 }

@@ -111,15 +111,16 @@
       },
       "config": {
         "driver": {
-          "pwmPan": 19,
-          "pwmTilt": 27
+          "type": "dynamixel",
+          "panId": 1,
+          "tiltId": 2
         },
         "tts": {
           "sampleRate": 24000
         },
         "serial": {
-          "transmit": 17,
-          "receive": 18
+          "transmit": 7,
+          "receive": 6
         },
         "virtualButton": true
       }

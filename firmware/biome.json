@@ -10,9 +10,7 @@
       "**/stackchan/**",
       "**/mods/**",
       "**/tests/**",
-      "**/scripts/**",
-      "!**/stackchan/speeches/calculate-power.js",
-      "!**/stackchan/utilities/esp32/mac-address.js"
+      "**/scripts/**"
     ],
     "ignoreUnknown": false
   },

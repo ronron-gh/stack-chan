@@ -45,6 +45,7 @@ export const onRobotCreated: StackchanMod['onRobotCreated'] = (robot) => {
     robot.button.a.onChanged = async function () {
       if (this.read()) {
         isFollowing = !isFollowing
+        robot.driver.setTorque(isFollowing)
         const text = isFollowing ? 'looking' : 'look away'
         robot.showBalloon(text)
         await asyncWait(1000)

@@ -19,17 +19,20 @@
     },
     "mac": {
       "modules": {
-        "mac-address": "sim/mac-address"
+        "mac-address": "sim/mac-address",
+        "embedded:io/pwm": "sim/pwm"
       }
     },
     "lin": {
       "modules": {
-        "mac-address": "sim/mac-address"
+        "mac-address": "sim/mac-address",
+        "embedded:io/pwm": "sim/pwm"
       }
     },
     "win": {
       "modules": {
-        "mac-address": "sim/mac-address"
+        "mac-address": "sim/mac-address",
+        "embedded:io/pwm": "sim/pwm"
       }
     }
   }

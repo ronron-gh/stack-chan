@@ -86,7 +86,7 @@ export class Robot {
     }
   }
   seed: number
-  #power: number
+  #mouthOpen: number
   #tts: TTS
   #driver: Driver
   #button: { [key in ButtonName]: Button }
@@ -109,7 +109,7 @@ export class Robot {
     this.useDriver(params.driver)
     this.useTTS(params.tts)
     this.#isMoving = false
-    this.#power = 0
+    this.#mouthOpen = 0
     this.#button = params.button
     this.#touch = params.touch
     this.#microphone = params.microphone
@@ -193,10 +193,14 @@ export class Robot {
     }
     this.#tts = tts
     this.#tts.onPlayed = (volume: number) => {
-      this.#power = volume
+      if (volume === 0) {
+        this.#mouthOpen = 0
+      } else {
+        this.#mouthOpen = Math.min(volume / 2000, 1.0)
+      }
     }
     this.#tts.onDone = () => {
-      this.#power = 0
+      this.#mouthOpen = 0
     }
   }
 
@@ -243,10 +247,19 @@ export class Robot {
   /**
    * get Pose
    *
-   * @returns Button instances
+   * @returns pose instances
    */
   get pose() {
     return this.#pose
+  }
+
+  /**
+   * get Microphone
+   *
+   * @returns Microphone instance
+   */
+  get microphone() {
+    return this.#microphone
   }
 
   /**
@@ -394,6 +407,13 @@ export class Robot {
     this.#emotion = emotion
   }
 
+  setMouthOpen(value: number) {
+    if (value < 0 || value > 1) {
+      throw new Error('value must be between 0 and 1')
+    }
+    this.#mouthOpen = value
+  }
+
   get driver(): Driver {
     return this.#driver
   }
@@ -422,11 +442,8 @@ export class Robot {
     if (this.#paused) {
       return
     }
-    if (this.#power === 0) {
-      this.#faceContext.mouth.open = 0
-    } else {
-      this.#faceContext.mouth.open = Math.min(this.#power / 2000, 1.0)
-    }
+    this.#faceContext.mouth.open = this.#mouthOpen
+
     this.#faceContext.emotion = this.#emotion
     if (this.#gazePoint != null) {
       const relativeGazePoint = Vector3.rotate(this.#gazePoint, {

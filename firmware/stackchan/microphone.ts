@@ -2,8 +2,33 @@ import AudioIn from 'embedded:io/audio/in'
 
 export default class Microphone {
   recording: boolean
+  #audioIn: AudioIn | null
+  onReadable?: (this: AudioIn, byteLength: number, sampleCount?: number) => void
 
   constructor() {
+    this.recording = false
+    this.#audioIn = null
+  }
+
+  start() {
+    if (this.recording) {
+      throw new Error('already recording')
+    }
+    const self = this
+    this.#audioIn = new AudioIn({
+      onReadable(size, sampleCount) {
+        if (self.onReadable) {
+          self.onReadable.call(this, size, sampleCount)
+        }
+      },
+    })
+    this.#audioIn.start()
+    this.recording = true
+  }
+
+  stop() {
+    this.#audioIn?.close()
+    this.#audioIn = null
     this.recording = false
   }
 

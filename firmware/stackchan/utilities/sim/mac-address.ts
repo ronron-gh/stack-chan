@@ -1,6 +1,6 @@
 import Net from 'net'
 
-function getMacAddress() {
+function getMacAddress(): string {
   return Net.get('MAC')
 }
 export default getMacAddress

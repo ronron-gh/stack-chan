@@ -17,16 +17,36 @@ type Status = {
 }
 
 async function waitForKey(): Promise<boolean> {
+  interface GlobalEnvironment {
+    device?: {
+      sensor?: {
+        Touch?: unknown
+      }
+    }
+  }
+  const globalEnv = globalThis as unknown as GlobalEnvironment
+  const Touch = config.Touch || globalEnv.device?.sensor?.Touch
   let isPressed: () => boolean
-  if (config.Touch) {
-    const touch = new config.Touch()
-    touch.points = [{}]
-    isPressed = () => {
-      touch.read(touch.points)
-      const state = touch.points[0].state
-      return state === 1 || state === 2
+  // biome-ignore lint/suspicious/noExplicitAny: touch driver of device don't have type
+  let touch: any
+  if (Touch) {
+    touch = new Touch()
+    if (touch.sample) {
+      // ECMA-419 driver
+      isPressed = () => {
+        const points = touch.sample()
+        return points?.length > 0
+      }
+    } else {
+      touch.points = [{}]
+      isPressed = () => {
+        touch.read(touch.points)
+        const state = touch.points[0].state
+        return state === 1 || state === 2
+      }
     }
   } else {
+    // legacy driver
     isPressed = () => {
       if (!globalThis.button || !globalThis.button.c) {
         return false
@@ -38,11 +58,13 @@ async function waitForKey(): Promise<boolean> {
     let count = 0
     const handle = Timer.repeat(() => {
       if (isPressed()) {
+        if (touch?.sample) touch.close()
         Timer.clear(handle)
         resolve(true)
       }
       count++
       if (count >= 10) {
+        if (touch?.sample) touch.close()
         Timer.clear(handle)
         resolve(false)
       }

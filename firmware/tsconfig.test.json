@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist-tests",
+    "allowJs": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "types": ["node"],
+    "skipLibCheck": true
+  },
+  "include": [
+    "stackchan/drivers/payload-buffer.ts",
+    "tests/unit/**/*.ts"
+  ],
+  "exclude": []
+}
